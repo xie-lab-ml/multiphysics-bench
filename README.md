@@ -8,10 +8,11 @@ We propose the first general multiphysics benchmark dataset that encompasses six
 
 ### 1. Dataset Download
 
-Please visit the link [https://huggingface.co/datasets/Indulge-Bai/Multiphysics_Bench ](https://huggingface.co/datasets/Indulge-Bai/Multiphysics_Bench ) to download the dataset (you will obtain `training.tar.gz` and `testing.tar.gz` separately). Extract the files to get the following directory structure:
+Please visit the link [huggingface.co/datasets/Indulge-Bai/Multiphysics_Bench ](https://huggingface.co/datasets/Indulge-Bai/Multiphysics_Bench ) to download the dataset (you will obtain `training.tar.gz` and `testing.tar.gz` separately). Extract the files to get the following directory structure:
 
 Run the preprocessing code to convert the training and testing datasets into normalized tensor format. The final directory structure will look like this:
 
+```
 Multiphysics_Bench/
 ├── training/
 │ ├── problem_1/
@@ -21,8 +22,8 @@ Multiphysics_Bench/
 │ ├── problem_1/
 │ ├── problem_2/
 │ └── ...
-├── preprocess.py
 └── README.md
+```
 
 
 ### 2. Dataset Overview
