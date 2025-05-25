@@ -1,0 +1,20 @@
+data:
+  name: 'VA'
+  datapath: '/data/yangchangfan/DiffusionPDE/data/testing/VA'
+  offset: 
+    - 10001
+
+
+test:
+  pre-trained: "/home/yangchangfan/CODE/DiffusionPDE/pretrained-VA/00000--uncond-ddpmpp-edm-gpus6-batch72-fp32/network-snapshot-010000.pkl"
+  iterations: 10
+generate:
+  seed: 0
+  device: 'cuda'
+  batch_size: 1
+  sigma_min: 0.002
+  sigma_max: 80
+  rho: 7
+  zeta_obs_a: 200
+  zeta_obs_u: 200
+  zeta_pde: 1

@@ -1,0 +1,19 @@
+data:
+  name: 'TE_heat'
+  datapath: '/data/yangchangfan/DiffusionPDE/data/testing/TE_heat'
+  start_idx: 10001    # 起始文件索引
+  num_samples: 1000   # 要处理的样本数量
+
+
+test:
+  pre-trained: "/home/yangchangfan/CODE/DiffusionPDE/pretrained-TE_heat/00011--uncond-ddpmpp-edm-gpus7-batch84-fp32/network-snapshot-010000.pkl"
+  iterations: 1000
+
+generate:
+  seed: 0
+  device: 'cuda'
+  batch_size: 1
+  sigma_min: 0.002
+  sigma_max: 80
+  rho: 7
+  outdir: '/home/yangchangfan/CODE/DiffusionPDE/results/TE_heat'

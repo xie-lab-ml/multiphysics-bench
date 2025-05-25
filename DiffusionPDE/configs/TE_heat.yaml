@@ -1,0 +1,22 @@
+data:
+  name: 'TE_heat'
+  datapath: '/data/yangchangfan/DiffusionPDE/data/testing/TE_heat'
+  # datapath: '/data/yangchangfan/DiffusionPDE/data/training/TE_heat/'
+  offset: 
+    - 10001
+
+
+test:
+  pre-trained: "/home/yangchangfan/CODE/DiffusionPDE/pretrained-TE_heat_sigl_E/00002--uncond-ddpmpp-edm-gpus7-batch84-fp32/network-snapshot-010000.pkl"
+  iterations: 10
+
+generate:
+  seed: 0
+  device: 'cuda'
+  batch_size: 1
+  sigma_min: 0.002
+  sigma_max: 80
+  rho: 7
+  zeta_obs_a: 200
+  zeta_obs_u: 200
+  zeta_pde: 1

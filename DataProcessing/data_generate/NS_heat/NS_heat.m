@@ -1,0 +1,417 @@
+function out = NS_heat_v1(parm)
+
+% pram
+parm_NN=parm.NN;
+parm_centerx=parm.centerx;
+parm_centery=parm.centery;
+
+parm_radius=parm.radius;
+
+parm_Q_heat=parm.Q_heat;
+
+
+
+%
+% NS_heat_v1.m
+%
+% Model exported on Mar 13 2025, 01:32 by COMSOL 6.2.0.290.
+
+import com.comsol.model.*
+import com.comsol.model.util.*
+
+model = ModelUtil.create('Model');
+
+
+model.modelPath('E:\DATA\NS_heat');
+
+model.component.create('comp1', true);
+
+model.component('comp1').geom.create('geom1', 2);
+
+model.component('comp1').mesh.create('mesh1');
+
+model.component('comp1').physics.create('spf', 'LaminarFlow', 'geom1');
+model.component('comp1').physics.create('ht', 'HeatTransferInFluids', 'geom1');
+
+model.study.create('std1');
+model.study('std1').create('stat', 'Stationary');
+model.study('std1').feature('stat').setSolveFor('/physics/spf', true);
+model.study('std1').feature('stat').setSolveFor('/physics/ht', true);
+
+model.param.set('L', '1.28[dm]');
+model.param.descr('L', 'Square side length');
+model.param.set('W', 'L/2');
+model.param.descr('W', 'Volume thickness');
+model.param.set('DeltaT', '2[K]');
+model.param.descr('DeltaT', 'Temperature difference');
+model.param.set('Tc', '283.15[K]');
+model.param.descr('Tc', 'Low temperature');
+model.param.set('Th', 'Tc+DeltaT');
+model.param.descr('Th', 'High temperature');
+model.param.set('T_avg', '(Tc+Th)/2');
+model.param.descr('T_avg', 'Average temperature approximation');
+model.param.set('p_ref', '1[atm]');
+model.param.descr('p_ref', 'Reference pressure');
+model.param.set('p0', '0[Pa]');
+model.param.descr('p0', '');
+model.param.set('Q_heat', parm_Q_heat);
+model.param.descr('Q_heat', '');
+model.param.set('centerx', parm_centerx);
+model.param.descr('centerx', '');
+model.param.set('centery', parm_centery);
+model.param.descr('centery', '');
+model.param.set('radius', parm_radius);
+model.param.descr('radius', '');
+
+model.component('comp1').geom('geom1').create('sq1', 'Square');
+model.component('comp1').geom('geom1').feature('sq1').set('size', 'L');
+model.component('comp1').geom('geom1').feature('sq1').set('base', 'center');
+model.component('comp1').geom('geom1').run('sq1');
+model.component('comp1').geom('geom1').create('c1', 'Circle');
+model.component('comp1').geom('geom1').feature('c1').set('r', 'radius');
+model.component('comp1').geom('geom1').feature('c1').set('pos', {'centerx' 'centery'});
+model.component('comp1').geom('geom1').run('c1');
+model.component('comp1').geom('geom1').create('dif1', 'Difference');
+model.component('comp1').geom('geom1').feature('dif1').selection('input').set({'sq1'});
+model.component('comp1').geom('geom1').feature('dif1').selection('input2').set({'c1'});
+model.component('comp1').geom('geom1').run('fin');
+model.component('comp1').geom('geom1').feature('dif1').set('keepsubtract', true);
+model.component('comp1').geom('geom1').run;
+
+model.component('comp1').material.create('mat1', 'Common');
+model.component('comp1').material('mat1').propertyGroup('def').func.create('eta', 'Piecewise');
+model.component('comp1').material('mat1').propertyGroup('def').func.create('Cp', 'Piecewise');
+model.component('comp1').material('mat1').propertyGroup('def').func.create('rho', 'Analytic');
+model.component('comp1').material('mat1').propertyGroup('def').func.create('k', 'Piecewise');
+model.component('comp1').material('mat1').propertyGroup('def').func.create('cs', 'Analytic');
+model.component('comp1').material('mat1').propertyGroup('def').func.create('an1', 'Analytic');
+model.component('comp1').material('mat1').propertyGroup('def').func.create('an2', 'Analytic');
+model.component('comp1').material('mat1').propertyGroup.create('RefractiveIndex', 'Refractive index');
+model.component('comp1').material('mat1').propertyGroup.create('NonlinearModel', 'Nonlinear model');
+model.component('comp1').material('mat1').propertyGroup.create('idealGas', 'Ideal gas');
+model.component('comp1').material('mat1').propertyGroup('idealGas').func.create('Cp', 'Piecewise');
+model.component('comp1').material('mat1').label('Air');
+model.component('comp1').material('mat1').set('family', 'air');
+model.component('comp1').material('mat1').propertyGroup('def').label('Basic');
+model.component('comp1').material('mat1').propertyGroup('def').func('eta').label('Piecewise');
+model.component('comp1').material('mat1').propertyGroup('def').func('eta').set('arg', 'T');
+model.component('comp1').material('mat1').propertyGroup('def').func('eta').set('pieces', {'200.0' '1600.0' '-8.38278E-7+8.35717342E-8*T^1-7.69429583E-11*T^2+4.6437266E-14*T^3-1.06585607E-17*T^4'});
+model.component('comp1').material('mat1').propertyGroup('def').func('eta').set('argunit', 'K');
+model.component('comp1').material('mat1').propertyGroup('def').func('eta').set('fununit', 'Pa*s');
+model.component('comp1').material('mat1').propertyGroup('def').func('Cp').label('Piecewise 2');
+model.component('comp1').material('mat1').propertyGroup('def').func('Cp').set('arg', 'T');
+model.component('comp1').material('mat1').propertyGroup('def').func('Cp').set('pieces', {'200.0' '1600.0' '1047.63657-0.372589265*T^1+9.45304214E-4*T^2-6.02409443E-7*T^3+1.2858961E-10*T^4'});
+model.component('comp1').material('mat1').propertyGroup('def').func('Cp').set('argunit', 'K');
+model.component('comp1').material('mat1').propertyGroup('def').func('Cp').set('fununit', 'J/(kg*K)');
+model.component('comp1').material('mat1').propertyGroup('def').func('rho').label('Analytic');
+model.component('comp1').material('mat1').propertyGroup('def').func('rho').set('expr', 'pA*0.02897/R_const[K*mol/J]/T');
+model.component('comp1').material('mat1').propertyGroup('def').func('rho').set('args', {'pA' 'T'});
+model.component('comp1').material('mat1').propertyGroup('def').func('rho').set('fununit', 'kg/m^3');
+model.component('comp1').material('mat1').propertyGroup('def').func('rho').set('argunit', {'Pa' 'K'});
+model.component('comp1').material('mat1').propertyGroup('def').func('rho').set('plotaxis', {'off' 'on'});
+model.component('comp1').material('mat1').propertyGroup('def').func('rho').set('plotfixedvalue', {'101325' '273.15'});
+model.component('comp1').material('mat1').propertyGroup('def').func('rho').set('plotargs', {'pA' '101325' '101325'; 'T' '273.15' '293.15'});
+model.component('comp1').material('mat1').propertyGroup('def').func('k').label('Piecewise 3');
+model.component('comp1').material('mat1').propertyGroup('def').func('k').set('arg', 'T');
+model.component('comp1').material('mat1').propertyGroup('def').func('k').set('pieces', {'200.0' '1600.0' '-0.00227583562+1.15480022E-4*T^1-7.90252856E-8*T^2+4.11702505E-11*T^3-7.43864331E-15*T^4'});
+model.component('comp1').material('mat1').propertyGroup('def').func('k').set('argunit', 'K');
+model.component('comp1').material('mat1').propertyGroup('def').func('k').set('fununit', 'W/(m*K)');
+model.component('comp1').material('mat1').propertyGroup('def').func('cs').label('Analytic 2');
+model.component('comp1').material('mat1').propertyGroup('def').func('cs').set('expr', 'sqrt(1.4*R_const[K*mol/J]/0.02897*T)');
+model.component('comp1').material('mat1').propertyGroup('def').func('cs').set('args', {'T'});
+model.component('comp1').material('mat1').propertyGroup('def').func('cs').set('fununit', 'm/s');
+model.component('comp1').material('mat1').propertyGroup('def').func('cs').set('argunit', {'K'});
+model.component('comp1').material('mat1').propertyGroup('def').func('cs').set('plotfixedvalue', {'273.15'});
+model.component('comp1').material('mat1').propertyGroup('def').func('cs').set('plotargs', {'T' '273.15' '373.15'});
+model.component('comp1').material('mat1').propertyGroup('def').func('an1').label('Analytic 1');
+model.component('comp1').material('mat1').propertyGroup('def').func('an1').set('funcname', 'alpha_p');
+model.component('comp1').material('mat1').propertyGroup('def').func('an1').set('expr', '-1/rho(pA,T)*d(rho(pA,T),T)');
+model.component('comp1').material('mat1').propertyGroup('def').func('an1').set('args', {'pA' 'T'});
+model.component('comp1').material('mat1').propertyGroup('def').func('an1').set('fununit', '1/K');
+model.component('comp1').material('mat1').propertyGroup('def').func('an1').set('argunit', {'Pa' 'K'});
+model.component('comp1').material('mat1').propertyGroup('def').func('an1').set('plotaxis', {'off' 'on'});
+model.component('comp1').material('mat1').propertyGroup('def').func('an1').set('plotfixedvalue', {'101325' '273.15'});
+model.component('comp1').material('mat1').propertyGroup('def').func('an1').set('plotargs', {'pA' '101325' '101325'; 'T' '273.15' '373.15'});
+model.component('comp1').material('mat1').propertyGroup('def').func('an2').label('Analytic 2a');
+model.component('comp1').material('mat1').propertyGroup('def').func('an2').set('funcname', 'muB');
+model.component('comp1').material('mat1').propertyGroup('def').func('an2').set('expr', '0.6*eta(T)');
+model.component('comp1').material('mat1').propertyGroup('def').func('an2').set('args', {'T'});
+model.component('comp1').material('mat1').propertyGroup('def').func('an2').set('fununit', 'Pa*s');
+model.component('comp1').material('mat1').propertyGroup('def').func('an2').set('argunit', {'K'});
+model.component('comp1').material('mat1').propertyGroup('def').func('an2').set('plotfixedvalue', {'200'});
+model.component('comp1').material('mat1').propertyGroup('def').func('an2').set('plotargs', {'T' '200' '1600'});
+model.component('comp1').material('mat1').propertyGroup('def').set('thermalexpansioncoefficient', '');
+model.component('comp1').material('mat1').propertyGroup('def').set('molarmass', '');
+model.component('comp1').material('mat1').propertyGroup('def').set('bulkviscosity', '');
+model.component('comp1').material('mat1').propertyGroup('def').set('thermalexpansioncoefficient', {'alpha_p(pA,T)' '0' '0' '0' 'alpha_p(pA,T)' '0' '0' '0' 'alpha_p(pA,T)'});
+model.component('comp1').material('mat1').propertyGroup('def').set('molarmass', '0.02897[kg/mol]');
+model.component('comp1').material('mat1').propertyGroup('def').set('bulkviscosity', 'muB(T)');
+model.component('comp1').material('mat1').propertyGroup('def').set('relpermeability', {'1' '0' '0' '0' '1' '0' '0' '0' '1'});
+model.component('comp1').material('mat1').propertyGroup('def').set('relpermittivity', {'1' '0' '0' '0' '1' '0' '0' '0' '1'});
+model.component('comp1').material('mat1').propertyGroup('def').set('dynamicviscosity', 'eta(T)');
+model.component('comp1').material('mat1').propertyGroup('def').set('ratioofspecificheat', '1.4');
+model.component('comp1').material('mat1').propertyGroup('def').set('electricconductivity', {'0[S/m]' '0' '0' '0' '0[S/m]' '0' '0' '0' '0[S/m]'});
+model.component('comp1').material('mat1').propertyGroup('def').set('heatcapacity', 'Cp(T)');
+model.component('comp1').material('mat1').propertyGroup('def').set('density', 'rho(pA,T)');
+model.component('comp1').material('mat1').propertyGroup('def').set('thermalconductivity', {'k(T)' '0' '0' '0' 'k(T)' '0' '0' '0' 'k(T)'});
+model.component('comp1').material('mat1').propertyGroup('def').set('soundspeed', 'cs(T)');
+model.component('comp1').material('mat1').propertyGroup('def').addInput('temperature');
+model.component('comp1').material('mat1').propertyGroup('def').addInput('pressure');
+model.component('comp1').material('mat1').propertyGroup('RefractiveIndex').label('Refractive index');
+model.component('comp1').material('mat1').propertyGroup('RefractiveIndex').set('n', {'1' '0' '0' '0' '1' '0' '0' '0' '1'});
+model.component('comp1').material('mat1').propertyGroup('NonlinearModel').label('Nonlinear model');
+model.component('comp1').material('mat1').propertyGroup('NonlinearModel').set('BA', 'def.gamma-1');
+model.component('comp1').material('mat1').propertyGroup('idealGas').label('Ideal gas');
+model.component('comp1').material('mat1').propertyGroup('idealGas').func('Cp').label('Piecewise 2');
+model.component('comp1').material('mat1').propertyGroup('idealGas').func('Cp').set('arg', 'T');
+model.component('comp1').material('mat1').propertyGroup('idealGas').func('Cp').set('pieces', {'200.0' '1600.0' '1047.63657-0.372589265*T^1+9.45304214E-4*T^2-6.02409443E-7*T^3+1.2858961E-10*T^4'});
+model.component('comp1').material('mat1').propertyGroup('idealGas').func('Cp').set('argunit', 'K');
+model.component('comp1').material('mat1').propertyGroup('idealGas').func('Cp').set('fununit', 'J/(kg*K)');
+model.component('comp1').material('mat1').propertyGroup('idealGas').set('Rs', 'R_const/Mn');
+model.component('comp1').material('mat1').propertyGroup('idealGas').set('heatcapacity', 'Cp(T)');
+model.component('comp1').material('mat1').propertyGroup('idealGas').set('ratioofspecificheat', '1.4');
+model.component('comp1').material('mat1').propertyGroup('idealGas').set('molarmass', '0.02897');
+model.component('comp1').material('mat1').propertyGroup('idealGas').addInput('temperature');
+model.component('comp1').material('mat1').propertyGroup('idealGas').addInput('pressure');
+model.component('comp1').material('mat1').materialType('nonSolid');
+model.component('comp1').material.create('mat2', 'Common');
+model.component('comp1').material('mat2').propertyGroup.create('Enu', 'Young''s modulus and Poisson''s ratio');
+model.component('comp1').material('mat2').propertyGroup.create('linzRes', 'Linearized resistivity');
+model.component('comp1').material('mat2').label('Copper');
+model.component('comp1').material('mat2').set('family', 'copper');
+model.component('comp1').material('mat2').propertyGroup('def').label('Basic');
+model.component('comp1').material('mat2').propertyGroup('def').set('relpermeability', {'1' '0' '0' '0' '1' '0' '0' '0' '1'});
+model.component('comp1').material('mat2').propertyGroup('def').set('electricconductivity', {'5.998e7[S/m]' '0' '0' '0' '5.998e7[S/m]' '0' '0' '0' '5.998e7[S/m]'});
+model.component('comp1').material('mat2').propertyGroup('def').set('thermalexpansioncoefficient', {'17e-6[1/K]' '0' '0' '0' '17e-6[1/K]' '0' '0' '0' '17e-6[1/K]'});
+model.component('comp1').material('mat2').propertyGroup('def').set('heatcapacity', '385[J/(kg*K)]');
+model.component('comp1').material('mat2').propertyGroup('def').set('relpermittivity', {'1' '0' '0' '0' '1' '0' '0' '0' '1'});
+model.component('comp1').material('mat2').propertyGroup('def').set('density', '8960[kg/m^3]');
+model.component('comp1').material('mat2').propertyGroup('def').set('thermalconductivity', {'400[W/(m*K)]' '0' '0' '0' '400[W/(m*K)]' '0' '0' '0' '400[W/(m*K)]'});
+model.component('comp1').material('mat2').propertyGroup('Enu').label('Young''s modulus and Poisson''s ratio');
+model.component('comp1').material('mat2').propertyGroup('Enu').set('E', '110[GPa]');
+model.component('comp1').material('mat2').propertyGroup('Enu').set('nu', '0.35');
+model.component('comp1').material('mat2').propertyGroup('linzRes').label('Linearized resistivity');
+model.component('comp1').material('mat2').propertyGroup('linzRes').set('rho0', '1.72e-8[ohm*m]');
+model.component('comp1').material('mat2').propertyGroup('linzRes').set('alpha', '0.0039[1/K]');
+model.component('comp1').material('mat2').propertyGroup('linzRes').set('Tref', '298[K]');
+model.component('comp1').material('mat2').propertyGroup('linzRes').addInput('temperature');
+model.component('comp1').material('mat2').selection.set([2]);
+model.component('comp1').material('mat1').selection.set([1]);
+
+model.component('comp1').physics('spf').selection.set([1]);
+model.component('comp1').physics('spf').prop('PhysicalModelProperty').set('IncludeGravity', true);
+model.component('comp1').physics('spf').prop('PhysicalModelProperty').set('pref', 'p_ref');
+model.component('comp1').physics('spf').prop('PhysicalModelProperty').set('rref', {'0' 'L' '0'});
+model.component('comp1').physics('spf').create('prpc1', 'PressurePointConstraint', 0);
+model.component('comp1').physics('spf').feature('prpc1').selection.set([2]);
+model.component('comp1').physics('spf').feature('prpc1').set('p0', 'p0');
+model.component('comp1').physics('ht').prop('PhysicalModelProperty').set('Tref', 'T_avg');
+model.component('comp1').physics('ht').create('temp1', 'TemperatureBoundary', 1);
+model.component('comp1').physics('ht').feature('temp1').set('T0', 'Tc');
+model.component('comp1').physics('ht').feature('temp1').selection.set([1]);
+model.component('comp1').physics('ht').create('temp2', 'TemperatureBoundary', 1);
+model.component('comp1').physics('ht').feature('temp2').set('T0', 'Tc');
+model.component('comp1').physics('ht').feature('temp2').selection.set([4]);
+model.component('comp1').physics('ht').create('hs1', 'HeatSource', 2);
+model.component('comp1').physics('ht').feature('hs1').selection.set([2]);
+model.component('comp1').physics('ht').feature('hs1').set('Q0', 'Q_heat*exp(x[1/m]+y[1/m])');
+
+model.component('comp1').multiphysics.create('nitf1', 'NonIsothermalFlow', 2);
+model.component('comp1').multiphysics('nitf1').set('BoussinesqApproximation', true);
+
+model.component('comp1').physics('spf').feature('init1').set('p_init', 'p0');
+model.component('comp1').physics('ht').feature('init1').set('Tinit', 'T_avg');
+
+model.component('comp1').mesh('mesh1').autoMeshSize(2);
+model.component('comp1').mesh('mesh1').run;
+
+model.sol.create('sol1');
+
+model.component('comp1').mesh('mesh1').stat.selection.geom(2);
+model.component('comp1').mesh('mesh1').stat.selection.set([1]);
+
+model.sol('sol1').study('std1');
+model.sol('sol1').create('st1', 'StudyStep');
+model.sol('sol1').feature('st1').set('study', 'std1');
+model.sol('sol1').feature('st1').set('studystep', 'stat');
+model.sol('sol1').create('v1', 'Variables');
+model.sol('sol1').feature('v1').set('control', 'stat');
+model.sol('sol1').create('s1', 'Stationary');
+model.sol('sol1').feature('s1').feature('aDef').set('cachepattern', true);
+model.sol('sol1').feature('s1').create('seDef', 'Segregated');
+model.sol('sol1').feature('s1').create('fc1', 'FullyCoupled');
+model.sol('sol1').feature('s1').feature('fc1').set('dtech', 'const');
+model.sol('sol1').feature('s1').feature('fc1').set('damp', 0.8);
+model.sol('sol1').feature('s1').feature('fc1').set('stabacc', 'cflcmp');
+model.sol('sol1').feature('s1').feature('fc1').set('initcfl', 5);
+model.sol('sol1').feature('s1').feature('fc1').set('mincfl', 10000);
+model.sol('sol1').feature('s1').feature('fc1').set('kppid', 0.65);
+model.sol('sol1').feature('s1').feature('fc1').set('kdpid', 0.15);
+model.sol('sol1').feature('s1').feature('fc1').set('kipid', 0.15);
+model.sol('sol1').feature('s1').feature('fc1').set('cfltol', 0.1);
+model.sol('sol1').feature('s1').feature('fc1').set('cflaa', true);
+model.sol('sol1').feature('s1').feature('fc1').set('cflaacfl', 9000);
+model.sol('sol1').feature('s1').feature('fc1').set('cflaafact', 1);
+model.sol('sol1').feature('s1').feature('fc1').set('maxiter', 150);
+model.sol('sol1').feature('s1').create('d1', 'Direct');
+model.sol('sol1').feature('s1').feature('d1').set('linsolver', 'pardiso');
+model.sol('sol1').feature('s1').feature('d1').set('pivotperturb', 1.0E-13);
+model.sol('sol1').feature('s1').feature('d1').label([native2unicode(hex2dec({'76' 'f4'}), 'unicode')  native2unicode(hex2dec({'63' 'a5'}), 'unicode')  native2unicode(hex2dec({'ff' '0c'}), 'unicode')  native2unicode(hex2dec({'97' '5e'}), 'unicode')  native2unicode(hex2dec({'7b' '49'}), 'unicode')  native2unicode(hex2dec({'6e' '29'}), 'unicode')  native2unicode(hex2dec({'6d' '41'}), 'unicode')  native2unicode(hex2dec({'52' 'a8'}), 'unicode') ' (nitf1) (' native2unicode(hex2dec({'5d' 'f2'}), 'unicode')  native2unicode(hex2dec({'54' '08'}), 'unicode')  native2unicode(hex2dec({'5e' '76'}), 'unicode') ')']);
+model.sol('sol1').feature('s1').create('i1', 'Iterative');
+model.sol('sol1').feature('s1').feature('i1').set('linsolver', 'gmres');
+model.sol('sol1').feature('s1').feature('i1').set('prefuntype', 'left');
+model.sol('sol1').feature('s1').feature('i1').set('itrestart', 50);
+model.sol('sol1').feature('s1').feature('i1').set('rhob', 20);
+model.sol('sol1').feature('s1').feature('i1').set('maxlinit', 1000);
+model.sol('sol1').feature('s1').feature('i1').set('nlinnormuse', 'on');
+model.sol('sol1').feature('s1').feature('i1').label(['AMG' native2unicode(hex2dec({'ff' '0c'}), 'unicode')  native2unicode(hex2dec({'97' '5e'}), 'unicode')  native2unicode(hex2dec({'7b' '49'}), 'unicode')  native2unicode(hex2dec({'6e' '29'}), 'unicode')  native2unicode(hex2dec({'6d' '41'}), 'unicode')  native2unicode(hex2dec({'52' 'a8'}), 'unicode') ' (nitf1)']);
+model.sol('sol1').feature('s1').feature('i1').create('mg1', 'Multigrid');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').set('prefun', 'saamg');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').set('mgcycle', 'v');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').set('maxcoarsedof', 80000);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').set('strconn', 0.02);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').set('nullspace', 'constant');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').set('usesmooth', false);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').set('saamgcompwise', true);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').set('loweramg', true);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').set('compactaggregation', false);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('pr').create('sc1', 'SCGS');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('pr').feature('sc1').set('linesweeptype', 'ssor');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('pr').feature('sc1').set('iter', 0);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('pr').feature('sc1').set('scgsrelax', 0.7);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('pr').feature('sc1').set('scgsmethod', 'lines');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('pr').feature('sc1').set('scgsvertexrelax', 0.7);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('pr').feature('sc1').set('relax', 0.5);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('pr').feature('sc1').set('scgssolv', 'stored');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('pr').feature('sc1').set('approxscgs', true);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('pr').feature('sc1').set('scgsdirectmaxsize', 1000);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('po').create('sc1', 'SCGS');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('po').feature('sc1').set('linesweeptype', 'ssor');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('po').feature('sc1').set('iter', 1);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('po').feature('sc1').set('scgsrelax', 0.7);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('po').feature('sc1').set('scgsmethod', 'lines');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('po').feature('sc1').set('scgsvertexrelax', 0.7);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('po').feature('sc1').set('relax', 0.5);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('po').feature('sc1').set('scgssolv', 'stored');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('po').feature('sc1').set('approxscgs', true);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('po').feature('sc1').set('scgsdirectmaxsize', 1000);
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('cs').create('d1', 'Direct');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('cs').feature('d1').set('linsolver', 'pardiso');
+model.sol('sol1').feature('s1').feature('i1').feature('mg1').feature('cs').feature('d1').set('pivotperturb', 1.0E-13);
+model.sol('sol1').feature('s1').feature('fc1').set('linsolver', 'd1');
+model.sol('sol1').feature('s1').feature('fc1').set('dtech', 'const');
+model.sol('sol1').feature('s1').feature('fc1').set('damp', 0.8);
+model.sol('sol1').feature('s1').feature('fc1').set('stabacc', 'cflcmp');
+model.sol('sol1').feature('s1').feature('fc1').set('initcfl', 5);
+model.sol('sol1').feature('s1').feature('fc1').set('mincfl', 10000);
+model.sol('sol1').feature('s1').feature('fc1').set('kppid', 0.65);
+model.sol('sol1').feature('s1').feature('fc1').set('kdpid', 0.15);
+model.sol('sol1').feature('s1').feature('fc1').set('kipid', 0.15);
+model.sol('sol1').feature('s1').feature('fc1').set('cfltol', 0.1);
+model.sol('sol1').feature('s1').feature('fc1').set('cflaa', true);
+model.sol('sol1').feature('s1').feature('fc1').set('cflaacfl', 9000);
+model.sol('sol1').feature('s1').feature('fc1').set('cflaafact', 1);
+model.sol('sol1').feature('s1').feature('fc1').set('maxiter', 150);
+model.sol('sol1').feature('s1').feature.remove('fcDef');
+model.sol('sol1').feature('s1').feature.remove('seDef');
+model.sol('sol1').attach('std1');
+
+model.sol('sol1').runAll;
+
+model.result.dataset('dset1').set('geom', 'geom1');
+model.result.create('pg1', 'PlotGroup2D');
+model.result('pg1').label([native2unicode(hex2dec({'90' '1f'}), 'unicode')  native2unicode(hex2dec({'5e' 'a6'}), 'unicode') ' (spf)']);
+model.result('pg1').set('frametype', 'spatial');
+model.result('pg1').set('data', 'dset1');
+model.result('pg1').set('defaultPlotID', 'ResultDefaults_SinglePhaseFlow/icom1/pdef1/pcond1/pg1');
+model.result('pg1').feature.create('surf1', 'Surface');
+model.result('pg1').feature('surf1').label([native2unicode(hex2dec({'88' '68'}), 'unicode')  native2unicode(hex2dec({'97' '62'}), 'unicode') ]);
+model.result('pg1').feature('surf1').set('showsolutionparams', 'on');
+model.result('pg1').feature('surf1').set('smooth', 'internal');
+model.result('pg1').feature('surf1').set('showsolutionparams', 'on');
+model.result('pg1').feature('surf1').set('data', 'parent');
+model.result.create('pg2', 'PlotGroup2D');
+model.result('pg2').label([native2unicode(hex2dec({'53' '8b'}), 'unicode')  native2unicode(hex2dec({'52' '9b'}), 'unicode') ' (spf)']);
+model.result('pg2').set('frametype', 'spatial');
+model.result('pg2').set('data', 'dset1');
+model.result('pg2').set('defaultPlotID', 'ResultDefaults_SinglePhaseFlow/icom1/pdef1/pcond1/pg2');
+model.result('pg2').feature.create('con1', 'Contour');
+model.result('pg2').feature('con1').label([native2unicode(hex2dec({'7b' '49'}), 'unicode')  native2unicode(hex2dec({'50' '3c'}), 'unicode')  native2unicode(hex2dec({'7e' 'bf'}), 'unicode') ]);
+model.result('pg2').feature('con1').set('showsolutionparams', 'on');
+model.result('pg2').feature('con1').set('expr', 'p');
+model.result('pg2').feature('con1').set('number', 40);
+model.result('pg2').feature('con1').set('levelrounding', false);
+model.result('pg2').feature('con1').set('smooth', 'internal');
+model.result('pg2').feature('con1').set('showsolutionparams', 'on');
+model.result('pg2').feature('con1').set('data', 'parent');
+model.result.create('pg3', 'PlotGroup2D');
+model.result('pg3').label([native2unicode(hex2dec({'6e' '29'}), 'unicode')  native2unicode(hex2dec({'5e' 'a6'}), 'unicode') ' (ht)']);
+model.result('pg3').set('data', 'dset1');
+model.result('pg3').set('defaultPlotID', 'ht/HT_PhysicsInterfaces/icom8/pdef1/pcond2/pcond4/pg2');
+model.result('pg3').feature.create('surf1', 'Surface');
+model.result('pg3').feature('surf1').set('showsolutionparams', 'on');
+model.result('pg3').feature('surf1').set('solutionparams', 'parent');
+model.result('pg3').feature('surf1').set('expr', 'T');
+model.result('pg3').feature('surf1').set('colortable', 'HeatCameraLight');
+model.result('pg3').feature('surf1').set('showsolutionparams', 'on');
+model.result('pg3').feature('surf1').set('data', 'parent');
+model.result.create('pg4', 'PlotGroup2D');
+model.result('pg4').label([native2unicode(hex2dec({'6e' '29'}), 'unicode')  native2unicode(hex2dec({'5e' 'a6'}), 'unicode')  native2unicode(hex2dec({'54' '8c'}), 'unicode')  native2unicode(hex2dec({'6d' '41'}), 'unicode')  native2unicode(hex2dec({'4f' '53'}), 'unicode')  native2unicode(hex2dec({'6d' '41'}), 'unicode')  native2unicode(hex2dec({'52' 'a8'}), 'unicode') ' (nitf1)']);
+model.result('pg4').set('showlegendsunit', true);
+model.result('pg4').set('data', 'dset1');
+model.result('pg4').set('defaultPlotID', 'MultiphysicsNonIsothermalFlow/cfcom1/pdef1/pcond4/pcond4/pcond1/pg3');
+model.result('pg4').feature.create('surf1', 'Surface');
+model.result('pg4').feature('surf1').label([native2unicode(hex2dec({'6d' '41'}), 'unicode')  native2unicode(hex2dec({'4f' '53'}), 'unicode')  native2unicode(hex2dec({'6e' '29'}), 'unicode')  native2unicode(hex2dec({'5e' 'a6'}), 'unicode') ]);
+model.result('pg4').feature('surf1').set('showsolutionparams', 'on');
+model.result('pg4').feature('surf1').set('solutionparams', 'parent');
+model.result('pg4').feature('surf1').set('expr', 'nitf1.T');
+model.result('pg4').feature('surf1').set('colortable', 'HeatCameraLight');
+model.result('pg4').feature('surf1').set('smooth', 'internal');
+model.result('pg4').feature('surf1').set('showsolutionparams', 'on');
+model.result('pg4').feature('surf1').set('data', 'parent');
+model.result('pg4').feature('surf1').feature.create('sel1', 'Selection');
+model.result('pg4').feature('surf1').feature('sel1').selection.geom('geom1', 2);
+model.result('pg4').feature('surf1').feature('sel1').selection.set([1]);
+model.result('pg4').feature.create('arws1', 'ArrowSurface');
+model.result('pg4').feature('arws1').label([native2unicode(hex2dec({'6d' '41'}), 'unicode')  native2unicode(hex2dec({'4f' '53'}), 'unicode')  native2unicode(hex2dec({'6d' '41'}), 'unicode')  native2unicode(hex2dec({'52' 'a8'}), 'unicode') ]);
+model.result('pg4').feature('arws1').set('showsolutionparams', 'on');
+model.result('pg4').feature('arws1').set('solutionparams', 'parent');
+model.result('pg4').feature('arws1').set('expr', {'nitf1.ux' 'nitf1.uy'});
+model.result('pg4').feature('arws1').set('xnumber', 30);
+model.result('pg4').feature('arws1').set('ynumber', 30);
+model.result('pg4').feature('arws1').set('arrowtype', 'cone');
+model.result('pg4').feature('arws1').set('arrowlength', 'logarithmic');
+model.result('pg4').feature('arws1').set('showsolutionparams', 'on');
+model.result('pg4').feature('arws1').set('data', 'parent');
+model.result('pg4').feature('arws1').feature.create('col1', 'Color');
+model.result('pg4').feature('arws1').feature('col1').set('showcolordata', 'off');
+model.result('pg4').feature('arws1').feature.create('filt1', 'Filter');
+model.result('pg4').feature('arws1').feature('filt1').set('expr', 'spf.U>nitf1.Uave');
+model.result('pg1').run;
+model.result('pg3').run;
+model.result.export.create('data1', 'Data');
+model.result.export('data1').setIndex('expr', 'ht.Qtot', 0);
+model.result.export('data1').setIndex('unit', 'W/m^3', 0);
+model.result.export('data1').setIndex('descr', [native2unicode(hex2dec({'60' '3b'}), 'unicode')  native2unicode(hex2dec({'70' 'ed'}), 'unicode')  native2unicode(hex2dec({'6e' '90'}), 'unicode') ], 0);
+model.result.export('data1').setIndex('expr', 'u', 1);
+model.result.export('data1').setIndex('unit', 'm/s', 1);
+model.result.export('data1').setIndex('descr', [native2unicode(hex2dec({'90' '1f'}), 'unicode')  native2unicode(hex2dec({'5e' 'a6'}), 'unicode')  native2unicode(hex2dec({'57' '3a'}), 'unicode')  native2unicode(hex2dec({'ff' '0c'}), 'unicode') 'x ' native2unicode(hex2dec({'52' '06'}), 'unicode')  native2unicode(hex2dec({'91' 'cf'}), 'unicode') ], 1);
+model.result.export('data1').setIndex('expr', 'v', 2);
+model.result.export('data1').setIndex('unit', 'm/s', 2);
+model.result.export('data1').setIndex('descr', [native2unicode(hex2dec({'90' '1f'}), 'unicode')  native2unicode(hex2dec({'5e' 'a6'}), 'unicode')  native2unicode(hex2dec({'57' '3a'}), 'unicode')  native2unicode(hex2dec({'ff' '0c'}), 'unicode') 'y ' native2unicode(hex2dec({'52' '06'}), 'unicode')  native2unicode(hex2dec({'91' 'cf'}), 'unicode') ], 2);
+model.result.export('data1').setIndex('expr', 'T', 3);
+model.result.export('data1').setIndex('unit', 'K', 3);
+model.result.export('data1').setIndex('descr', [native2unicode(hex2dec({'6e' '29'}), 'unicode')  native2unicode(hex2dec({'5e' 'a6'}), 'unicode') ], 3);
+
+%path_result=['E:\DATA\NS_heat\data\' num2str(parm_NN) '.csv'];  %path_result
+path_result==['data\' num2str(parm_NN) '.csv'];  %path_result
+model.result.export('data1').set('filename', path_result);
+
+model.result.export('data1').set('location', 'regulargrid');
+model.result.export('data1').set('gridstruct', 'grid');
+model.result.export('data1').set('regulargridx2', 128);
+model.result.export('data1').set('regulargridy2', 128);
+model.result.export('data1').set('gridstruct', 'spreadsheet');
+model.result.export('data1').run;
+
+out = model;
