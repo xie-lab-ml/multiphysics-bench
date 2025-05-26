@@ -1,6 +1,10 @@
 # Multiphysics Bench
 
-In our work [Multiphysics Bench: Benchmarking and Investigating Scientific Machine Learning for Multiphysics PDEs](https://arxiv.org/abs/2505.17575), we propose the first general multiphysics benchmark dataset that encompasses six canonical coupled scenarios across domains such as electromagnetics, heat transfer, fluid flow, solid mechanics, pressure acoustics, and mass transport. This benchmark features the most comprehensive coupling types, the most diverse PDEs, and the largest data scale.
+Dataset: [huggingface.co/datasets/Indulge-Bai/Multiphysics_Bench ](https://huggingface.co/datasets/Indulge-Bai/Multiphysics_Bench)
+
+Paper: [Multiphysics Bench: Benchmarking and Investigating Scientific Machine Learning for Multiphysics PDEs](https://arxiv.org/abs/2505.17575)
+
+We propose the first general multiphysics benchmark dataset that encompasses six canonical coupled scenarios across domains such as electromagnetics, heat transfer, fluid flow, solid mechanics, pressure acoustics, and mass transport. This benchmark features the most comprehensive coupling types, the most diverse PDEs, and the largest data scale.
 
 ![image](https://anonymous.4open.science/r/MultiphysicsBench/assets/intro.jpg)
 
@@ -10,7 +14,7 @@ In our work [Multiphysics Bench: Benchmarking and Investigating Scientific Machi
 
 ## 1. Dataset Download
 
-Please visit the link [huggingface.co/datasets/Indulge-Bai/Multiphysics_Bench ](https://huggingface.co/datasets/Indulge-Bai/Multiphysics_Bench ) to download the dataset (you will obtain `training.tar.gz` and `testing.tar.gz` separately). Extract the files to get the following directory structure:
+Please visit the link [huggingface.co/datasets/Indulge-Bai/Multiphysics_Bench ](https://huggingface.co/datasets/Indulge-Bai/Multiphysics_Bench) to download the dataset (you will obtain `training.tar.gz` and `testing.tar.gz` separately). Extract the files to get the following directory structure:
 
 Run the preprocessing code to convert the training and testing datasets into normalized tensor format. The final directory structure will look like this:
 
