@@ -1,8 +1,6 @@
 # Multiphysics Bench
 
-From Multiphysics Bench: Benchmarking and Investigating Scientific Machine Learning for Multiphysics PDEs
-
-We propose the first general multiphysics benchmark dataset that encompasses six canonical coupled scenarios across domains such as electromagnetics, heat transfer, fluid flow, solid mechanics, pressure acoustics, and mass transport. This benchmark features the most comprehensive coupling types, the most diverse PDEs, and the largest data scale.
+In our work [Multiphysics Bench: Benchmarking and Investigating Scientific Machine Learning for Multiphysics PDEs](https://arxiv.org/abs/2505.17575), we propose the first general multiphysics benchmark dataset that encompasses six canonical coupled scenarios across domains such as electromagnetics, heat transfer, fluid flow, solid mechanics, pressure acoustics, and mass transport. This benchmark features the most comprehensive coupling types, the most diverse PDEs, and the largest data scale.
 
 ![image](https://anonymous.4open.science/r/MultiphysicsBench/assets/intro.jpg)
 
