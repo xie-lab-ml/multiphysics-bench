@@ -252,3 +252,16 @@ For **DeepONet** and **PINNs**, navigate to the corresponding problem directory 
 For **FNO**, please refer to the official documentation at [FNO]([http://www.xxx.com](https://github.com/NeuralOperator/neuraloperator)).
 
 For **DiffusionPDE**, please refer to the official documentation at [DiffusionPDE](https://github.com/jhhuangchloe/DiffusionPDE).
+
+
+### Citing
+If you find our dataset or code useful for your research, please cite our paper.
+
+```
+@article{yang2025multiphysics,
+      title={Multiphysics Bench: Benchmarking and Investigating Scientific Machine Learning for Multiphysics PDEs}, 
+      author={Changfan Yang and Lichen Bai and Yinpeng Wang and Shufei Zhang and Zeke Xie},
+      year={2025},
+      journal={arXiv preprint arXiv:2505.17575},
+}
+```
