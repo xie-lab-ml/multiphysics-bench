@@ -240,7 +240,7 @@ In the 'DataProcessing' folder, we provide the data generation and normalization
 - **xxx.py**: Python code for post-processing (facilitating execution across different baselines)
 
 ### Key Notes:
-1. **Data Generation** → Use `.m` files (requires MATLAB environment)  
+1. **Data Generation** → Use `.m` files (compatible with MATLAB MATLAB environment)  
 2. **Data Processing** → Use `.py` files (Python ensures better compatibility with various baseline models)  
 
 This design ensures reproducibility of data while simplifying adaptation for different frameworks.
