@@ -49,7 +49,7 @@ folder_path = snapshot_download(
 
 This dataset contains simulations of the Wave Equation and Heat Conduction Equation. This coupling mechanism underpins various applications, including thermal management in electronic components (e.g., microprocessors), inductive heating (e.g., welding and metal processing), biomedical technologies (e.g., photothermal therapy), and aerospace engineering (e.g., radiative heating of satellite surfaces).
 
-<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/TEheat_Data.png" width="40%" />
+<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/problem_pic/TEheat_Data.png" width="40%" />
 
 
 **How to use**
@@ -77,7 +77,7 @@ DataProcessing/data_generate/TE_heat/parm2matrix_TE_heat.m
 
 This dataset contains simulations of the Navier–Stokes Equations and Heat Balance Equation. Thermo-Fluid coupling is essential in the design and optimization of systems such as electronic cooling (e.g., chip heat dissipation), energy systems (e.g., nuclear reactor cooling), and precision thermal control in manufacturing.
 
-<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/NSheat_Data.png" width="40%" />
+<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/problem_pic/NSheat_Data.png" width="40%" />
 
 
 **How to use**
@@ -107,7 +107,7 @@ DataProcessing/data_generate/NS_heat/parm2matrix_NS_heat.m
 
 This dataset simulates the Navier–Stokes Equations and Current Continuity Equation. This coupling is foundational to applications such as micropumps and micromixers in microfluidic systems.
 
-<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/Eflow_Data.png" width="40%" />
+<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/problem_pic/Eflow_Data.png" width="40%" />
 
 **How to use**
 
@@ -136,7 +136,7 @@ DataProcessing/data_generate/E_flow/parm2matrix_E_flow.m
 
 This dataset simulates Ampère’s Law, Continuity Equation, Navier–Stokes Equations, and Lorentz Force. This model finds extensive application in electromagnetic pumps, plasma confinement devices (e.g., tokamaks), astrophysical phenomena, and pollutant transport modeling.
 
-<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/MHD_Data.png" width="40%" />
+<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/problem_pic/MHD_Data.png" width="40%" />
 
 
 **How to use**
@@ -167,7 +167,7 @@ DataProcessing/data_generate/MHD/parm2matrix_MHD.m
 
 This dataset simulates the Acoustic Wave Equation and Structural Vibration Equation. The input is the spatial material density (1 channel). The outputs comprise the acoustic pressure field (2 channels), stress components (6 channels), and structural displacements (4 channels), for a total of **12 output channels**.
 
-<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/VA_Data.png" width="40%" />
+<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/problem_pic/VA_Data.png" width="40%" />
 
 
 **How to use**
@@ -207,7 +207,7 @@ DataProcessing/data_generate/VA/parm2matrix_VA.m
 
 This dataset contains simulations based on Darcy’s Law and the Convection–Diffusion Equation. The input includes the source term `Sc` and the initial state of the system at time `t0` (concentration and velocity), totaling **4 channels**. The output consists of the predicted concentration and velocity fields across **10 future time steps**, resulting in **30 channels in total**.
 
-<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/Elder_Data.gif" width="40%" />
+<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/problem_pic/Elder_Data.gif" width="40%" />
 
 
 **How to use**
