@@ -49,7 +49,7 @@ folder_path = snapshot_download(
 
 This dataset contains simulations of the Wave Equation and Heat Conduction Equation. This coupling mechanism underpins various applications, including thermal management in electronic components (e.g., microprocessors), inductive heating (e.g., welding and metal processing), biomedical technologies (e.g., photothermal therapy), and aerospace engineering (e.g., radiative heating of satellite surfaces).
 
-<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/TEheat_Data.png" width="70%" />
+<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/TEheat_Data.png" width="40%" />
 
 
 **How to use**
@@ -107,7 +107,7 @@ DataProcessing/data_generate/NS_heat/parm2matrix_NS_heat.m
 
 This dataset simulates the Navier–Stokes Equations and Current Continuity Equation. This coupling is foundational to applications such as micropumps and micromixers in microfluidic systems.
 
-<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/problem_pic/Eflow_Data.png" width="40%" />
+<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/Eflow_Data.png" width="40%" />
 
 **How to use**
 
