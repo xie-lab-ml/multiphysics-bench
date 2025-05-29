@@ -49,7 +49,7 @@ folder_path = snapshot_download(
 
 This dataset contains simulations of the Wave Equation and Heat Conduction Equation. This coupling mechanism underpins various applications, including thermal management in electronic components (e.g., microprocessors), inductive heating (e.g., welding and metal processing), biomedical technologies (e.g., photothermal therapy), and aerospace engineering (e.g., radiative heating of satellite surfaces).
 
-<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/problem_pic/TEheat_Data.png" width="40%" />
+<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/problem_pic/TEheat_Data.png" width="50%" />
 
 
 **How to use**
@@ -167,7 +167,7 @@ DataProcessing/data_generate/MHD/parm2matrix_MHD.m
 
 This dataset simulates the Acoustic Wave Equation and Structural Vibration Equation. The input is the spatial material density (1 channel). The outputs comprise the acoustic pressure field (2 channels), stress components (6 channels), and structural displacements (4 channels), for a total of **12 output channels**.
 
-<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/problem_pic/VA_Data.png" width="40%" />
+<img src="https://anonymous.4open.science/r/MultiphysicsBench/assets/problem_pic/VA_Data.png" width="50%" />
 
 
 **How to use**
@@ -240,7 +240,7 @@ In the 'DataProcessing' folder, we provide the data generation and normalization
 - **xxx.py**: Python code for post-processing (facilitating execution across different baselines)
 
 ### Key Notes:
-1. **Data Generation** → Use `.m` files (compatible with MATLAB MATLAB environment)  
+1. **Data Generation** → Use `.m` files (requires COMSOL Multiphysics 6.2 with MATLAB environment)  
 2. **Data Processing** → Use `.py` files (Python ensures better compatibility with various baseline models)  
 
 This design ensures reproducibility of data while simplifying adaptation for different frameworks.
